@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pink: #ff6b9d;
+            --pink-dark: #e84393;
+            --purple: #a55eea;
+            --yellow: #fdcb6e;
+            --blue: #74b9ff;
+        }
+        
+        body {
+            font-family: 'Comic Neue', cursive;
+            background: linear-gradient(135deg, #ffe8f0, #fce4ec);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 4rem;
+            text-align: center;
+            margin: 20px 0;
+            color: var(--pink-dark);
+            text-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+            transform: rotate(-3deg);
+            animation: bounce 2s infinite alternate;
+        }
+        
+        .cake-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 40px auto;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+        
+        .cake {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1s;
+            transform: rotateY(0deg);
+        }
+        
+        .cake:hover {
+            transform: rotateY(180deg);
+        }
+        
+        .cake-front, .cake-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .cake-front {
+            background: linear-gradient(45deg, var(--pink), var(--purple));
+            color: white;
+            font-size: 2rem;
+        }
+        
+        .cake-back {
+            background: linear-gradient(45deg, var(--yellow), var(--blue));
+            transform: rotateY(180deg);
+            padding: 20px;
+            box-sizing: border-box;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+        
+        .polaroid {
+            background: white;
+            padding: 15px 15px 60px;
+            width: 250px;
+            margin: 40px auto;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: rotate(3deg);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .polaroid:hover {
+            transform: rotate(0deg) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        
+        .polaroid img {
+            width: 100%;
+            height: auto;
+            border: 1px solid #eee;
+        }
+        
+        .polaroid::after {
+            content: attr(data-caption);
+            position: absolute;
+            bottom: 15px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-family: 'Pacifico', cursive;
+            color: var(--pink-dark);
+            font-size: 1.2rem;
+        }
+        
+        .message-box {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin: 40px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .message-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        .message-box::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(90deg, var(--pink), var(--purple), var(--blue), var(--yellow));
+        }
+        
+        .gift-box {
+            width: 200px;
+            height: 200px;
+            margin: 40px auto;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .gift {
+            width: 100%;
+            height: 100%;
+            background: var(--pink);
+            position: relative;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            transition: all 0.5s;
+            transform-style: preserve-3d;
+        }
+        
+        .gift:hover {
+            transform: rotateY(180deg);
+        }
+        
+        .gift-lid {
+            position: absolute;
+            width: 100%;
+            height: 20%;
+            background: var(--pink-dark);
+            top: -10%;
+            border-radius: 10px 10px 0 0;
+        }
+        
+        .gift-bow {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: var(--yellow);
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 50%;
+            z-index: 2;
+        }
+        
+        .gift-content {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backface-visibility: hidden;
+            transform: rotateY(180deg);
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+            font-size: 1.2rem;
+            color: var(--pink-dark);
+        }
+        
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            color: var(--pink);
+            animation: float 10s linear infinite;
+            opacity: 0;
+        }
+        
+        .btn-surprise {
+            display: block;
+            margin: 40px auto;
+            padding: 15px 40px;
+            background: linear-gradient(45deg, var(--pink), var(--purple));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            animation: pulse 2s infinite;
+        }
+        
+        .btn-surprise:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            animation: none;
+        }
+        
+        .btn-surprise:active {
+            transform: translateY(1px);
+        }
+        
+        @keyframes bounce {
+            0% { transform: translateY(0) rotate(-3deg); }
+            100% { transform: translateY(-15px) rotate(-3deg); }
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) scale(1);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .typing-effect {
+            border-right: 3px solid var(--pink-dark);
+            white-space: nowrap;
+            overflow: hidden;
+            display: inline-block;
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--pink-dark); }
+        }
+        
+        /* Mini fireworks preview */
+        .mini-firework {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            animation: mini-explode 1s ease-out forwards;
+            opacity: 0;
+            z-index: -1;
+        }
+        
+        @keyframes mini-explode {
+            0% { transform: translate(var(--x), var(--y)) scale(0); opacity: 1; }
+            100% { transform: translate(var(--x), var(--y)) scale(1); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-hearts" id="hearts"></div>
+    
+    <div class="container">
+        <h1>Happy Birthday! <span id="typing"></span></h1>
+        
+        <div class="cake-container">
+            <div class="cake">
+                <div class="cake-front">
+                    🎂Arahin Kesini🎂
+                </div>
+                <div class="cake-back">
+                    Semoga panjang umur, sehat selalu, dan tetap lucu! Tetep semangattt, buat live sama ngontennya yaaa
+                </div>
+            </div>
+        </div>
+        
+        <div class="polaroid" data-caption="Yang Lucu Banget">
+            <img src="2.png" alt="Foto Teman">
+        </div>
+        
+        <div class="message-box">
+            <h2 style="text-align: center; color: var(--pink-dark);">Untuk Angelina Utari,</h2>
+            <p>Selamat ulang tahun ya! 🎉🎈</p>
+            <p>Di hari spesialmu ini, aku ingin bilang...</p>
+            <p>Kamu itu lucu banget! Nggak ada yang bisa nandingin keimutanmu. Dari cara kamu ketawa sampe ekspresi-ekspresi random yang kamu bikin, semuanya bikin hari-hariku lebih cerah.</p>
+            <p>Aku udah siapin kejutan spesial buat kamu!</p>
+            <p>Klik tombol di bawah ini ya...</p>
+        </div>
+        
+        <div class="gift-box">
+            <div class="gift">
+                <div class="gift-lid"></div>
+                <div class="gift-bow"></div>
+                <div class="gift-content">
+                    Ngomong apa lagi ya ini?<br>Intinyaaa, tetep semangat jalanin semuanya yaaa
+                </div>
+            </div>
+        </div>
+        
+        <button class="btn-surprise" id="surpriseBtn">Klik disiniii</button>
+    </div>
+    
+    <script>
+        // Create floating hearts
+        function createHearts() {
+            const heartsContainer = document.getElementById('hearts');
+            const colors = ['#ff6b9d', '#e84393', '#a55eea', '#fdcb6e', '#74b9ff'];
+            
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'heart';
+                    heart.innerHTML = '❤';
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.animationDuration = (5 + Math.random() * 10) + 's';
+                    heart.style.animationDelay = Math.random() * 5 + 's';
+                    heart.style.fontSize = (20 + Math.random() * 30) + 'px';
+                    heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+                    heartsContainer.appendChild(heart);
+                    
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 10000);
+                }, i * 500);
+            }
+        }
+        
+        // Create mini fireworks around button
+        function createMiniFireworks() {
+            const colors = ['#ff6b9d', '#e84393', '#a55eea', '#fdcb6e', '#74b9ff', '#00cec9'];
+            const btn = document.getElementById('surpriseBtn');
+            const btnRect = btn.getBoundingClientRect();
+            const centerX = btnRect.left + btnRect.width/2;
+            const centerY = btnRect.top + btnRect.height/2;
+            
+            for (let i = 0; i < 10; i++) {
+                const firework = document.createElement('div');
+                firework.className = 'mini-firework';
+                firework.style.left = centerX + 'px';
+                firework.style.top = centerY + 'px';
+                firework.style.setProperty('--x', (Math.random() - 0.5) * 50 + 'px');
+                firework.style.setProperty('--y', (Math.random() - 0.5) * 50 + 'px');
+                firework.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                document.body.appendChild(firework);
+                
+                setTimeout(() => {
+                    firework.remove();
+                }, 1000);
+            }
+        }
+        
+        // Typewriter effect
+        const text = "Angell";
+        let i = 0;
+        const typing = setInterval(() => {
+            if (i < text.length) {
+                document.getElementById('typing').textContent += text.charAt(i);
+                i++;
+            } else {
+                clearInterval(typing);
+            }
+        }, 100);
+        
+        // Create hearts periodically
+        setInterval(createHearts, 3000);
+        createHearts();
+        
+        // Mini fireworks when hovering surprise button
+        document.getElementById('surpriseBtn').addEventListener('mouseenter', createMiniFireworks);
+        
+        // Surprise button click - open surprise page
+        document.getElementById('surpriseBtn').addEventListener('click', function() {
+            // Create fullscreen overlay transition
+            const overlay = document.createElement('div');
+            overlay.style.position = 'fixed';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.width = '100%';
+            overlay.style.height = '100%';
+            overlay.style.background = 'linear-gradient(45deg, var(--pink), var(--purple))';
+            overlay.style.display = 'flex';
+            overlay.style.alignItems = 'center';
+            overlay.style.justifyContent = 'center';
+            overlay.style.zIndex = '1000';
+            overlay.style.fontSize = '3rem';
+            overlay.style.color = 'white';
+            overlay.style.fontFamily = '"Pacifico", cursive';
+            overlay.textContent = 'Hehe Nungguin yaaa';
+            document.body.appendChild(overlay);
+            
+            // Redirect after delay
+            setTimeout(() => {
+                window.location.href = 'surprise.html';
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

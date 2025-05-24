@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Birthday Surprise!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pink: #ff6b9d;
+            --pink-dark: #e84393;
+            --purple: #a55eea;
+            --yellow: #fdcb6e;
+            --blue: #74b9ff;
+        }
+        
+        body {
+            font-family: 'Comic Neue', cursive;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background-color: #000;
+            color: white;
+            text-align: center;
+            overflow-x: hidden;
+        }
+        
+        .scroll-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+        }
+        
+        section {
+            height: 100vh;
+            scroll-snap-align: start;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        
+        h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 4rem;
+            color: var(--yellow);
+            text-shadow: 0 0 10px var(--pink);
+            margin: 30px 0;
+            animation: glow 2s infinite alternate;
+        }
+        
+        .message {
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+            backdrop-filter: blur(5px);
+            border: 2px solid var(--pink);
+            box-shadow: 0 0 20px var(--pink);
+            animation: borderGlow 3s infinite alternate;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-back {
+            display: inline-block;
+            margin: 30px 0;
+            padding: 15px 30px;
+            background: var(--purple);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .btn-back:hover {
+            background: var(--pink-dark);
+            transform: scale(1.1);
+        }
+        
+        /* Animations */
+        @keyframes glow {
+            from { text-shadow: 0 0 10px var(--pink), 0 0 20px var(--pink); }
+            to { text-shadow: 0 0 20px var(--pink), 0 0 30px var(--purple), 0 0 40px var(--blue); }
+        }
+        
+        @keyframes borderGlow {
+            0% { box-shadow: 0 0 20px var(--pink), 0 0 30px rgba(255,255,255,0.2); border-color: var(--pink); }
+            33% { box-shadow: 0 0 30px var(--purple), 0 0 40px rgba(255,255,255,0.2); border-color: var(--purple); }
+            66% { box-shadow: 0 0 30px var(--blue), 0 0 40px rgba(255,255,255,0.2); border-color: var(--blue); }
+            100% { box-shadow: 0 0 30px var(--yellow), 0 0 40px rgba(255,255,255,0.2); border-color: var(--yellow); }
+        }
+        
+        /* Fireworks */
+        .firework {
+            position: fixed;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            box-shadow: 0 0 10px 5px;
+            animation: explode 1s ease-out forwards;
+            opacity: 0;
+            z-index: 1;
+        }
+        
+        @keyframes explode {
+            0% { transform: translate(var(--x), var(--y)) scale(0); opacity: 1; }
+            100% { transform: translate(var(--x), var(--y)) scale(1); opacity: 0; }
+        }
+        
+        .particle {
+            position: fixed;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            animation: particle 1s ease-out forwards;
+            z-index: 1;
+        }
+        
+        @keyframes particle {
+            0% { transform: translate(0, 0); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)); opacity: 0; }
+        }
+        
+        /* Floating elements */
+        .floating-element {
+            position: fixed;
+            font-size: 2rem;
+            animation: float-up 5s linear forwards;
+            z-index: 1;
+            user-select: none;
+        }
+        
+        @keyframes float-up {
+            to { transform: translateY(-100vh) rotate(360deg); }
+        }
+        
+        /* Cake animation */
+        .cake-animation {
+            font-size: 10rem;
+            margin: 30px 0;
+            display: inline-block;
+            animation: bounce 0.5s infinite alternate, rotate 4s infinite linear;
+            transform-origin: bottom;
+        }
+        
+        @keyframes bounce {
+            from { transform: scale(1) rotate(0deg); }
+            to { transform: scale(1.2) rotate(5deg); }
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(5deg) scale(1.1); }
+            50% { transform: rotate(0deg) scale(1.2); }
+            75% { transform: rotate(-5deg) scale(1.1); }
+            100% { transform: rotate(0deg) scale(1); }
+        }
+        
+        /* Photo frame in surprise */
+        .surprise-photo {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 5px solid var(--yellow);
+            margin: 20px auto;
+            overflow: hidden;
+            box-shadow: 0 0 30px var(--pink);
+            animation: photoGlow 3s infinite alternate;
+        }
+        
+        .surprise-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        @keyframes photoGlow {
+            0% { box-shadow: 0 0 20px var(--pink); }
+            50% { box-shadow: 0 0 40px var(--purple); }
+            100% { box-shadow: 0 0 30px var(--blue); }
+        }
+        
+        /* Celebration text */
+        .celebration-text {
+            font-size: 1.5rem;
+            margin: 20px 0;
+            animation: colorChange 3s infinite;
+        }
+        
+        @keyframes colorChange {
+            0% { color: var(--pink); }
+            33% { color: var(--yellow); }
+            66% { color: var(--blue); }
+            100% { color: var(--pink); }
+        }
+        
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            color: white;
+            font-size: 1.5rem;
+            animation: bounce 2s infinite;
+        }
+        
+        /* Different sections */
+        #section1 {
+            background: linear-gradient(135deg, #e84393, #a55eea);
+        }
+        
+        #section2 {
+            background: linear-gradient(135deg, #a55eea, #74b9ff);
+        }
+        
+        #section3 {
+            background: linear-gradient(135deg, #74b9ff, #fdcb6e);
+        }
+        
+        #section4 {
+            background: linear-gradient(135deg, #fdcb6e, #e84393);
+        }
+    </style>
+</head>
+<body>
+    <div class="scroll-container">
+        <section id="section1">
+            <div class="container">
+                <h1>Happy Brithdayyy</h1>
+                <div class="cake-animation">🎂</div>
+                <div class="celebration-text">Scroll Ke bawah</div>
+                <div class="scroll-indicator">↓</div>
+            </div>
+        </section>
+        
+        <section id="section2">
+            <div class="container">
+                <div class="surprise-photo">
+                    <img src="1.png" alt="Foto Teman">
+                </div>
+                
+                <div class="message">
+                    <h2>Untuk Angel,</h2>
+                    <p class="celebration-text">Selamat ulang tahun yang ke-20!(Katanya) 🎉</p>
+                    <p>Selamat Ulang Tahun angel, semoga di tahun ini apapun yang kamu rencanakan dapat terwujud dan lancar semuanyaa!</p>
+                    <p>Tetep semangat kamu yaaa, semoga di tahun depan masih bisa kirim hadiah lagi.. <br>Mau ucapin maacii juga udah mau main sama aku, kadang sampe di tag di dc suru main, hehehe <br> Thank you ya angie</p>
+                </div>
+                <div class="scroll-indicator">↓</div>
+            </div>
+        </section>
+        
+        <section id="section3">
+            <div class="container">
+                <div class="message">
+                    <p style="font-size: 1.8rem; margin: 20px 0;">✨ Semoga selalu bahagia! ✨<br>
+                    ✨ Semoga semua impianmu terkabul! ✨<br>
+                    ✨ Dan tentu saja... tetap lucu selalu! ✨<br>
+                    ✨ Wish You All The Best ✨
+                    </p>
+                    
+                    <div style="font-size: 3rem; margin: 30px 0; animation: float 3s infinite ease-in-out;">
+                        🎈 🎁 🍰 🎊
+                    </div>
+                    
+                    <p>Aku bersyukur bisa mengenal kamu dan menikmati hampir semua live kamuuu!</p>
+                </div>
+                <div class="scroll-indicator">↓</div>
+            </div>
+        </section>
+        
+        <section id="section4">
+            <div class="container">
+                <div class="message">
+                    <h2>Dari penonton kamuuu</h2>
+                    <p style="font-size: 2rem; margin: 20px 0;">Siapa ya</p>
+                    <p style="font-size: 1.2rem;">Yang selalu menontonmu dalam diam</p>
+                    
+                    <div style="font-size: 3rem; margin: 30px 0;">
+                        ❤️ 😊 🥳
+                    </div>
+                    
+                    <a href="index.html" class="btn-back">Kembali ke Halaman Utama</a>
+                    <a href="https://youtu.be/dQw4w9WgXcQ?si=rBX1ivmGBEALcnHS" class="btn-back">Nyesel kalau di klik</a>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <script>
+        // Colors for fireworks
+        const colors = ['#ff6b9d', '#e84393', '#a55eea', '#fdcb6e', '#74b9ff', '#00cec9'];
+        
+        // Elements for floating animation
+        const elements = ['🎉', '🎈', '🎁', '🍰', '✨', '💖', '🥳', '🎊', '❤️', '🌸'];
+        
+        // Create fireworks
+        function createFirework() {
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * window.innerHeight;
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            
+            // Create firework center
+            const firework = document.createElement('div');
+            firework.className = 'firework';
+            firework.style.left = x + 'px';
+            firework.style.top = y + 'px';
+            firework.style.setProperty('--x', (Math.random() - 0.5) * 20 + 'px');
+            firework.style.setProperty('--y', (Math.random() - 0.5) * 20 + 'px');
+            firework.style.boxShadow = `0 0 10px 5px ${color}`;
+            firework.style.backgroundColor = color;
+            document.body.appendChild(firework);
+            
+            // Create particles
+            const particleCount = 30 + Math.floor(Math.random() * 50);
+            for (let i = 0; i < particleCount; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 5 + Math.random() * 100;
+                const duration = 0.5 + Math.random() * 1.5;
+                
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+                particle.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
+                particle.style.backgroundColor = color;
+                particle.style.animationDuration = duration + 's';
+                document.body.appendChild(particle);
+                
+                setTimeout(() => {
+                    particle.remove();
+                }, duration * 1000);
+            }
+            
+            setTimeout(() => {
+                firework.remove();
+            }, 1000);
+        }
+        
+        // Create floating elements
+        function createFloatingElement() {
+            const element = elements[Math.floor(Math.random() * elements.length)];
+            
+            const floatingElement = document.createElement('div');
+            floatingElement.className = 'floating-element';
+            floatingElement.textContent = element;
+            floatingElement.style.left = Math.random() * window.innerWidth + 'px';
+            floatingElement.style.top = window.innerHeight + 'px';
+            floatingElement.style.fontSize = (1 + Math.random() * 3) + 'rem';
+            floatingElement.style.animationDuration = (3 + Math.random() * 7) + 's';
+            document.body.appendChild(floatingElement);
+            
+            setTimeout(() => {
+                floatingElement.remove();
+            }, 10000);
+        }
+        
+        // Play birthday song
+        function playBirthdaySong() {
+            const notes = [
+                {note: 'C4', duration: 0.3}, {note: 'C4', duration: 0.3}, 
+                {note: 'D4', duration: 0.6}, {note: 'C4', duration: 0.6}, 
+                {note: 'F4', duration: 0.6}, {note: 'E4', duration: 1.2},
+                
+                {note: 'C4', duration: 0.3}, {note: 'C4', duration: 0.3}, 
+                {note: 'D4', duration: 0.6}, {note: 'C4', duration: 0.6}, 
+                {note: 'G4', duration: 0.6}, {note: 'F4', duration: 1.2},
+                
+                {note: 'C4', duration: 0.3}, {note: 'C4', duration: 0.3}, 
+                {note: 'C5', duration: 0.6}, {note: 'A4', duration: 0.6}, 
+                {note: 'F4', duration: 0.6}, {note: 'E4', duration: 0.6}, 
+                {note: 'D4', duration: 1.2},
+                
+                {note: 'Bb4', duration: 0.3}, {note: 'Bb4', duration: 0.3}, 
+                {note: 'A4', duration: 0.6}, {note: 'F4', duration: 0.6}, 
+                {note: 'G4', duration: 0.6}, {note: 'F4', duration: 1.2}
+            ];
+            
+            const freq = {
+                'C4': 261.63, 'D4': 293.66, 'E4': 329.63, 'F4': 349.23,
+                'G4': 392.00, 'A4': 440.00, 'Bb4': 466.16, 'C5': 523.25
+            };
+            
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            let time = audioCtx.currentTime;
+            
+            notes.forEach(n => {
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                
+                oscillator.type = 'triangle';
+                oscillator.frequency.value = freq[n.note];
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                
+                gainNode.gain.setValueAtTime(0.5, time);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, time + n.duration);
+                
+                oscillator.start(time);
+                oscillator.stop(time + n.duration);
+                
+                time += n.duration + 0.05;
+            });
+        }
+        
+        // Start animations
+        setInterval(createFirework, 300);
+        setInterval(createFloatingElement, 200);
+        
+        // Initial fireworks when page loads
+        window.onload = function() {
+            // Big center fireworks
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    createFirework();
+                }, i * 300);
+            }
+            
+            // Play song after delay
+            setTimeout(playBirthdaySong, 500);
+            
+            // Create initial floating elements
+            for (let i = 0; i < 20; i++) {
+                setTimeout(createFloatingElement, i * 200);
+            }
+            
+            // Hide scroll indicator when at bottom
+            const scrollContainer = document.querySelector('.scroll-container');
+            const scrollIndicators = document.querySelectorAll('.scroll-indicator');
+            
+            scrollContainer.addEventListener('scroll', function() {
+                const isAtBottom = this.scrollHeight - this.scrollTop === this.clientHeight;
+                
+                scrollIndicators.forEach(indicator => {
+                    if (isAtBottom && indicator === scrollIndicators[scrollIndicators.length - 1]) {
+                        indicator.style.display = 'none';
+                    } else {
+                        indicator.style.display = 'block';
+                    }
+                });
+            });
+        };
+    </script>
+</body>
+</html>
